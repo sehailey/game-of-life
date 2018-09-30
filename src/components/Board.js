@@ -1,17 +1,42 @@
 import React, { Component } from "react"
 
+const WIDTH = 20
+const HEIGHT = 20
+
 const initialState = {
-  width: 0,
-  height: 0
+  board: new Array(WIDTH).fill(Array(HEIGHT).fill(0))
 }
+
 class Board extends Component {
   constructor() {
     super()
     this.state = initialState
-  }
 
+    this.handleClick = this.handleClick.bind(this)
+  }
   makeBoard() {
-    return new Array(this.state.height).fill(Array(this.state.width).fill(0))
+    const cells = h => {
+      for (let w = 0; w <= WIDTH; w++) {
+        return <td key={`cell${h}-${w}`} id={`cell${h}-${w}`} />
+      }
+    }
+    for (let h = 0; h <= HEIGHT; h++) {
+      return (
+        <table className="table table-dark table-bordered">
+          <tbody>
+            <tr key={`row${h}`}>{cells(h)}</tr>
+          </tbody>
+        </table>
+      )
+    }
+  }
+  handleClick(e) {
+    const row = e.target.getAttribute("row")
+    const col = e.target.getAttribute("col")
+
+    this.toggleCell(row, col)
+    console.log(this.state.board)
+    console.log(row, col)
   }
 
   cellExists(row, col) {
@@ -21,11 +46,19 @@ class Board extends Component {
   }
 
   getCell(row, col) {
-    return this.cellExists ? this.board[row][col] : 0
+    if (this.cellExists(row, col)) return this.state.board[row][col]
+    else return 0
   }
 
   setCell(value, row, col) {
-    if (this.cellExists) this.board[row][col] = value
+    if (this.cellExists) {
+      const newBoard = this.state.board
+      newBoard[row][col] = value
+      // this.setState(() => {
+      //   return { board: newBoard }
+      // })
+      console.log(newBoard[row][col])
+    }
   }
 
   toggleCell(row, col) {
@@ -80,24 +113,17 @@ class Board extends Component {
       newBoard[row][col] = nextCell
     })
 
-    this.board = newBoard
+    this.setState({ board: newBoard })
   }
 
   render() {
     return (
       <div className="board">
-        <button type="button" className="btn">
-          Step
-        </button>
-        <button type="button" className="btn">
-          Play
-        </button>
-        <button type="button" className="btn">
-          Randomize
-        </button>
-        <button type="button" className="btn">
-          Clear
-        </button>
+        {this.makeBoard()}
+        <button className="btn btn-dark">Step</button>
+        <button className="btn btn-dark">Play</button>
+        <button className="btn btn-dark">Randomize</button>
+        <button className="btn btn-dark">Clear</button>
       </div>
     )
   }

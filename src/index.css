@@ -1,5 +1,25 @@
 body {
   margin: 0;
-  padding: 0;
+  padding: 1em;
   font-family: sans-serif;
+}
+
+.btn {
+  margin: 0.5em;
+}
+
+.square {
+  padding-bottom: 100%;
+}
+.orange {
+  background-color: orange;
+}
+.orangered {
+  background-color: orangered;
+}
+.gold {
+  background-color: gold;
+}
+.darkorange {
+  background-color: darkorange;
 }
